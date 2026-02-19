@@ -1,0 +1,2544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RNZ.PHONES - Raw Mobile Deals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+        :root {
+            --primary: #000;
+            --secondary: #fff;
+            --accent: #FF3E00;
+            --accent2: #00C2FF;
+            --accent3: #FFDE00;
+            --card-bg: #f5f5f5;
+            --border-size: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary);
+            color: var(--primary);
+            line-height: 1.4;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 1rem;
+            border-bottom: var(--border-size) solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--accent);
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--accent);
+            transition: width 0.2s;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Header Controls */
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent);
+            color: var(--secondary);
+            border-color: var(--accent);
+        }
+
+        .search-box {
+            display: flex;
+            border: 2px solid var(--secondary);
+            overflow: hidden;
+            min-width: 200px;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background-color: transparent;
+            color: var(--secondary);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-btn {
+            background-color: transparent;
+            color: var(--secondary);
+            border: none;
+            padding: 0 0.75rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--accent);
+        }
+
+        /* Slideshow */
+        .slideshow-container {
+            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: var(--primary);
+            overflow: hidden;
+        }
+
+        .slideshow-wrapper {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: var(--secondary);
+            padding: 2rem;
+        }
+
+        .slide-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .slide-description {
+            font-size: 1.2rem;
+            max-width: 600px;
+        }
+
+        .slide-btn {
+            background-color: var(--accent);
+            color: var(--secondary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .slide-btn:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        .slideshow-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 1rem;
+            z-index: 10;
+        }
+
+        .nav-btn {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: var(--secondary);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--accent);
+        }
+
+        .slideshow-dots {
+            position: absolute;
+            bottom: 1rem;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dot.active {
+            background-color: var(--accent);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border: var(--border-size) solid var(--primary);
+            transform: rotate(-1deg);
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Product Card */
+        .product-card {
+            background-color: var(--card-bg);
+            border: var(--border-size) solid var(--primary);
+            overflow: hidden;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 10px 10px 0 var(--primary);
+        }
+
+        .product-image-container {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            border-bottom: var(--border-size) solid var(--primary);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent2);
+            color: var(--secondary);
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border: 2px solid var(--primary);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        .product-condition {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            gap: 0.5rem;
+        }
+
+        .stars {
+            color: var(--accent3);
+        }
+
+        .rating-count {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: 900;
+        }
+
+        .original-price {
+            font-size: 1rem;
+            text-decoration: line-through;
+            color: #777;
+        }
+
+        .price-range {
+            font-size: 1rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .product-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .product-btn {
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: none;
+            padding: 0.75rem;
+            width: 100%;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .product-btn:hover {
+            background-color: var(--accent);
+        }
+
+        /* Load More Button */
+        .load-more-container {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .load-more-btn {
+            background-color: var(--primary);
+            color: var(--secondary);
+            border: var(--border-size) solid var(--primary);
+            padding: 1rem 2rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .load-more-btn:hover {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 3rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 2px solid #333;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: var(--secondary);
+            padding: 1rem 1.5rem;
+            border: var(--border-size) solid var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 1000;
+            transform: translateY(150%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .logo {
+                font-size: 1.75rem;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .filter-container {
+                justify-content: center;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .slide-title {
+                font-size: 1.75rem;
+            }
+
+            .slide-description {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .slideshow-nav {
+                padding: 0 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="header-top">
+        <div class="logo">RNZ.<span>PHONES</span></div>
+        <nav class="nav">
+            <a href="#">Home</a>
+            <a href="#">Deals</a>
+            <a href="#">Brands</a>
+            <a href="#">About</a>
+        </nav>
+    </div>
+
+    <div class="header-controls">
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">ALL PHONES</button>
+            <button class="filter-btn" data-filter="samsung">SAMSUNG</button>
+            <button class="filter-btn" data-filter="apple">APPLE</button>
+            <button class="filter-btn" data-filter="google">GOOGLE</button>
+            <button class="filter-btn" data-filter="oneplus">ONEPLUS</button>
+            <button class="filter-btn" data-filter="budget">UNDER $100</button>
+            <button class="filter-btn" data-filter="5g">5G</button>
+            <button class="filter-btn" data-filter="unlocked">UNLOCKED</button>
+        </div>
+
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="SEARCH FOR PHONES...">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+</header>
+
+<!-- Slideshow -->
+<div class="slideshow-container">
+    <div class="slideshow-wrapper" id="slideshow-wrapper">
+        <div class="slide">
+            <img src="https://i.ebayimg.com/thumbs/images/g/f2MAAeSwWopojEhl/s-l1200.webp" alt="Samsung Galaxy S22">
+            <div class="slide-content">
+                <h2 class="slide-title">SAMSUNG GALAXY S22</h2>
+                <p class="slide-description">Premium flagship at a fraction of the price. Unlocked and ready to use.</p>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="slide-btn">SHOP NOW</a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img src="https://i.ebayimg.com/thumbs/images/g/P-UAAOSw84thmUOJ/s-l1200.webp" alt="Apple iPhone 12">
+            <div class="slide-content">
+                <h2 class="slide-title">APPLE IPHONE 12</h2>
+                <p class="slide-description">Experience the power of Apple. 5G capable with A14 Bionic chip.</p>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="slide-btn">SHOP NOW</a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img src="https://i.ebayimg.com/thumbs/images/g/yK4AAOSwJJFmn9vf/s-l1200.webp" alt="Google Pixel 6a">
+            <div class="slide-content">
+                <h2 class="slide-title">GOOGLE PIXEL 6A</h2>
+                <p class="slide-description">The magic of Google at your fingertips. Amazing camera and pure Android experience.</p>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="slide-btn">SHOP NOW</a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img src="https://i.ebayimg.com/thumbs/images/g/9rMAAOSw599mrOAr/s-l1200.webp" alt="OnePlus Nord N30">
+            <div class="slide-content">
+                <h2 class="slide-title">ONEPLUS NORD N30</h2>
+                <p class="slide-description">Smooth performance and sleek design. Unbeatable value for money.</p>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="slide-btn">SHOP NOW</a>
+            </div>
+        </div>
+
+        <div class="slide">
+            <img src="https://i.ebayimg.com/thumbs/images/g/3GwAAeSwSPRoOaeu/s-l1200.webp" alt="Budget Phones">
+            <div class="slide-content">
+                <h2 class="slide-title">BUDGET PHONES UNDER $100</h2>
+                <p class="slide-description">Quality smartphones at unbeatable prices. Perfect for everyday use.</p>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="slide-btn">SHOP NOW</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="slideshow-nav">
+        <button class="nav-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="slideshow-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+        <span class="dot" data-slide="3"></span>
+        <span class="dot" data-slide="4"></span>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main class="main-content">
+    <h2 class="section-title">All Phones</h2>
+
+    <!-- Product Grid -->
+    <div class="product-grid">
+        <!-- Product 1 -->
+        <div class="product-card" data-brand="samsung" data-price="155.99" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/f2MAAeSwWopojEhl/s-l400.webp" alt="Samsung Galaxy S22" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S22</h3>
+                <p class="product-condition">128GB S901U Unlocked - Very Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(6)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$155.99</span>
+                    <span class="original-price">$799.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>403 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-brand="iris" data-price="29.99" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/lvwAAeSwRkRo1GRN/s-l400.webp" alt="IRIS Connect" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">IRIS Connect</h3>
+                <p class="product-condition">32GB Unlocked - Excellent</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(868 sold)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$29.99</span>
+                    <span class="original-price">$89.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>868 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-brand="samsung" data-price="131.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/iMMAAeSwG5JoL7sl/s-l400.webp" alt="Samsung Galaxy S21" class="product-image">
+                <div class="product-badge">BESTSELLER</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S21 5G</h3>
+                <p class="product-condition">128GB G991U Unlocked - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(293)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$131.99</span>
+                    <span class="original-price">$799.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>10,358 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product-card" data-brand="iris" data-price="15.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/ys0AAeSwdshoOacl/s-l400.webp" alt="IRIS Flip" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">IRIS Flip</h3>
+                <p class="product-condition">8GB Unlocked - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(148 sold)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$15.99</span>
+                    <span class="original-price">$59.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>148 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product-card" data-brand="samsung" data-price="145.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/~50AAeSw3BZojEkt/s-l400.webp" alt="Samsung Galaxy S22" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S22</h3>
+                <p class="product-condition">128GB S901U Unlocked - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(34)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$145.99</span>
+                    <span class="original-price">$799.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>2,804 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product-card" data-brand="samsung" data-price="178.99" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/G3cAAeSw939oNjhw/s-l400.webp" alt="Samsung Galaxy S22+" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S22+</h3>
+                <p class="product-condition">128GB S906U Unlocked - Very Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(19)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$178.99</span>
+                    <span class="original-price">$999.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>753 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 7 -->
+        <div class="product-card" data-brand="samsung" data-price="129.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/zesAAOSwNClnfUix/s-l400.webp" alt="Samsung Galaxy S10" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S10</h3>
+                <p class="product-condition">S10e G973U Unlocked T-Mobile</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(326 sold)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$129.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>TRADE IN PROMO ONLY</span>
+                    <span>326 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 8 -->
+        <div class="product-card" data-brand="oneplus" data-price="83.00" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/jVEAAOSwv1ZoUDUz/s-l400.webp" alt="OnePlus 7 Pro" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">OnePlus 7 Pro 5G</h3>
+                <p class="product-condition">Sprint - Nebula Blue - 8GB - 256GB - Excellent</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(29 sold)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$83.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>Sprint</span>
+                    <span>29 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 9 -->
+        <div class="product-card" data-brand="iris" data-price="18.99" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/3GwAAeSwSPRoOaeu/s-l400.webp" alt="IRIS Flip" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">IRIS Flip</h3>
+                <p class="product-condition">8GB Unlocked - Very Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(54 sold)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$18.99</span>
+                    <span class="original-price">$59.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>54 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 10 -->
+        <div class="product-card" data-brand="samsung" data-price="114.95" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/jeEAAeSw~9Zo2XV-/s-l400.webp" alt="Samsung Galaxy A53" class="product-image">
+                <div class="product-badge">5G</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy A53 5G</h3>
+                <p class="product-condition">128GB (Unlocked) - Black</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(69)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$114.95</span>
+                    <span class="original-price">$349.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>92 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 11 -->
+        <div class="product-card" data-brand="apple" data-price="179.48" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/P-UAAOSw84thmUOJ/s-l400.webp" alt="Apple iPhone 12" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Apple iPhone 12</h3>
+                <p class="product-condition">5G - 64GB Factory Unlocked GSM + CDMA</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(67)</span>
+                </div>
+                <div class="product-price">
+                    <span class="price-range">$179.48 - $199.48</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>203 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 12 -->
+        <div class="product-card" data-brand="samsung" data-price="150.99" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/JtsAAeSwG5JoL-ya/s-l400.webp" alt="Samsung Galaxy S21" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S21 5G</h3>
+                <p class="product-condition">128GB G991U Unlocked - Excellent</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(293)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$150.99</span>
+                    <span class="original-price">$799.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>489 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 13 -->
+        <div class="product-card" data-brand="samsung" data-price="159.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/nkwAAeSwL55oL2Rf/s-l400.webp" alt="Samsung Galaxy S22+" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S22+</h3>
+                <p class="product-condition">128GB S906U Unlocked - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(16)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$159.99</span>
+                    <span class="original-price">$999.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>660 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 14 -->
+        <div class="product-card" data-brand="samsung" data-price="149.48" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/YNMAAOSwVbRjhsqa/s-l400.webp" alt="Samsung Galaxy S21" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S21</h3>
+                <p class="product-condition">S991U 5G 128GB FACTORY UNLOCKED</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(51)</span>
+                </div>
+                <div class="product-price">
+                    <span class="price-range">$149.48 - $159.48</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>290 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 15 -->
+        <div class="product-card" data-brand="samsung" data-price="206.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/kvwAAeSwDeVoL2FO/s-l400.webp" alt="Samsung Galaxy S23" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S23</h3>
+                <p class="product-condition">128GB S911U Unlocked - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(25)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$206.99</span>
+                    <span class="original-price">$799.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>532 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 16 -->
+        <div class="product-card" data-brand="samsung" data-price="129.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/8K8AAOSwrh9nfUis/s-l400.webp" alt="Samsung Galaxy S10" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S10</h3>
+                <p class="product-condition">S10e G970U G973U Unlocked T-Mobile</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(151 sold)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$129.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>TRADE IN PROMO ONLY</span>
+                    <span>151 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 17 -->
+        <div class="product-card" data-brand="samsung" data-price="99.99" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/UQ8AAeSwwG5oqOFl/s-l400.webp" alt="Samsung Galaxy A14" class="product-image">
+                <div class="product-badge">5G</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy A14 5G</h3>
+                <p class="product-condition">Factory Unlocked - 64GB US Version Black</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(55)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$99.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>118 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 18 -->
+        <div class="product-card" data-brand="samsung" data-price="197.99" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/l7MAAeSwd11oL22F/s-l400.webp" alt="Samsung Galaxy S22+" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S22+</h3>
+                <p class="product-condition">128GB S906U Unlocked - Excellent</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(293)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$197.99</span>
+                    <span class="original-price">$999.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>198 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 19 -->
+        <div class="product-card" data-brand="samsung" data-price="239.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/i1UAAOSwcx5oE6xD/s-l400.webp" alt="Samsung Galaxy S22 Ultra" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S22 Ultra</h3>
+                <p class="product-condition">S908U Unlocked T-Mobile AT&T Mint Verizon</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(25)</span>
+                </div>
+                <div class="product-price">
+                    <span class="price-range">$239.99 - $369.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>256GB/512GB</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 20 -->
+        <div class="product-card" data-brand="google" data-price="117.00" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/yK4AAOSwJJFmn9vf/s-l400.webp" alt="Google Pixel 6a" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Google Pixel 6a</h3>
+                <p class="product-condition">GB62Z Unlocked 128GB Charcoal Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(34)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$117.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>44 watching</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 21 -->
+        <div class="product-card" data-brand="tcl" data-price="39.95" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/rFsAAeSwmd5o0BHw/s-l400.webp" alt="TCL TAB 8 Plus" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">TCL TAB 8 Plus</h3>
+                <p class="product-condition">32GB (Wifi + Unlocked LTE) - Power Black</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(Only 1 left!)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$39.95</span>
+                    <span class="original-price">$179.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 22 -->
+        <div class="product-card" data-brand="samsung" data-price="139.48" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/PIcAAOSwSB1etYmY/s-l400.webp" alt="Samsung Galaxy S10e" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S10e</h3>
+                <p class="product-condition">128gb G970U Factory Unlocked</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(24)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$139.48</span>
+                </div>
+                <div class="product-stats">
+                    <span>Open Box</span>
+                    <span>286 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 23 -->
+        <div class="product-card" data-brand="samsung" data-price="141.99" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/H3YAAeSwsrloM-E9/s-l400.webp" alt="Samsung Galaxy S21" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S21 5G</h3>
+                <p class="product-condition">128GB G991U Unlocked - Very Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(293)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$141.99</span>
+                    <span class="original-price">$799.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>7,749 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 24 -->
+        <div class="product-card" data-brand="samsung" data-price="69.29" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/lEsAAeSwbMRnpoGs/s-l400.webp" alt="Samsung Galaxy A21" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy A21</h3>
+                <p class="product-condition">SM-A215U Unlocked 32GB Black Very Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(53)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$69.29</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>Only 1 left!</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 25 -->
+        <div class="product-card" data-brand="samsung" data-price="235.99" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/7eYAAeSwaNZoMI-3/s-l400.webp" alt="Samsung Galaxy S23" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S23</h3>
+                <p class="product-condition">128GB S911U Unlocked - Very Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(9)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$235.99</span>
+                    <span class="original-price">$799.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>92 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 26 -->
+        <div class="product-card" data-brand="samsung" data-price="55.00" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/CyIAAOSwM2Jnbb1y/s-l400.webp" alt="Samsung Galaxy A15" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy A15</h3>
+                <p class="product-condition">4G - Open Panama - Brave Black - 128GB</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(Only 1 left!)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$55.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 27 -->
+        <div class="product-card" data-brand="schok" data-price="14.54" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/xVYAAOSwk65mn-Wa/s-l400.webp" alt="Schok Classic Flip" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Schok Classic Flip</h3>
+                <p class="product-condition">SC3218B Boost Only 8GB Black Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">()</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$14.54</span>
+                </div>
+                <div class="product-stats">
+                    <span>Boost Only</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 28 -->
+        <div class="product-card" data-brand="samsung" data-price="179.99" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/9IoAAeSwyexom7RY/s-l400.webp" alt="Samsung Galaxy A26" class="product-image">
+                <div class="product-badge">5G</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy A26</h3>
+                <p class="product-condition">A266U 5G (2025) 6.7" 128GB Unlocked</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(24)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$179.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Excellent</span>
+                    <span>24 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 29 -->
+        <div class="product-card" data-brand="motorola" data-price="90.49" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/Ye8AAOSwpipkzVOJ/s-l400.webp" alt="Motorola Edge" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Motorola Edge</h3>
+                <p class="product-condition">XT2141 Moto Edge 5G 2021 256GB Blue</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(43)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$90.49</span>
+                    <span class="original-price">$199.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>540 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 30 -->
+        <div class="product-card" data-brand="apple" data-price="57.00" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/avsAAeSwzd1oxp3G/s-l400.webp" alt="Apple iPhone 7 Plus" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Apple iPhone 7 Plus</h3>
+                <p class="product-condition">Consumer Cellular - Black - 32GB</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(Only 1 left!)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$57.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>Consumer Cellular</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 31 -->
+        <div class="product-card" data-brand="samsung" data-price="216.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/iKEAAeSwu0toL3JN/s-l400.webp" alt="Samsung Galaxy S21 Ultra" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S21 Ultra</h3>
+                <p class="product-condition">5G 128GB G998U Unlocked - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(211)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$216.99</span>
+                    <span class="original-price">$1,199.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>6,281 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 32 -->
+        <div class="product-card" data-brand="samsung" data-price="226.48" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/eVUAAOSwmc1kXoVq/s-l400.webp" alt="Samsung Galaxy Z Flip 4" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy Z Flip 4</h3>
+                <p class="product-condition">5G 128GB UNLOCKED AT&T VERIZON TMOBILE</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(8)</span>
+                </div>
+                <div class="product-price">
+                    <span class="price-range">$226.48 - $249.48</span>
+                </div>
+                <div class="product-stats">
+                    <span>Excellent</span>
+                    <span>127 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 33 -->
+        <div class="product-card" data-brand="samsung" data-price="40.00" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/2MsAAOSw31tmDshs/s-l400.webp" alt="Samsung Galaxy A20" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy A20</h3>
+                <p class="product-condition">-Spectrum 32GB Black - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">()</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$40.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>Spectrum</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 34 -->
+        <div class="product-card" data-brand="samsung" data-price="179.00" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/ImsAAeSwnrpok7tv/s-l400.webp" alt="Samsung Galaxy S21 Plus" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S21 Plus</h3>
+                <p class="product-condition">5g G996 Fully Unlocked 8GB/28GB</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(293)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$179.00</span>
+                    <span class="original-price">$469.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Excellent</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 35 -->
+        <div class="product-card" data-brand="google" data-price="166.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/YqkAAeSwuKNojEji/s-l400.webp" alt="Google Pixel 7" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Google Pixel 7</h3>
+                <p class="product-condition">128GB Unlocked - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(21)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$166.99</span>
+                    <span class="original-price">$599.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>444 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 36 -->
+        <div class="product-card" data-brand="iris" data-price="23.99" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/yQgAAeSwBb1oOagS/s-l400.webp" alt="IRIS Flip" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">IRIS Flip</h3>
+                <p class="product-condition">8GB Unlocked - Excellent</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(281 sold)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$23.99</span>
+                    <span class="original-price">$59.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>281 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 37 -->
+        <div class="product-card" data-brand="samsung" data-price="239.48" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/7LUAAOSwNZRn1dRa/s-l400.webp" alt="Samsung Galaxy S23" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S23</h3>
+                <p class="product-condition">128GB FACTORY UNLOCKED Verizon ATT TMobile</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(25)</span>
+                </div>
+                <div class="product-price">
+                    <span class="price-range">$239.48 - $259.48</span>
+                </div>
+                <div class="product-stats">
+                    <span>Excellent</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 38 -->
+        <div class="product-card" data-brand="apple" data-price="66.95" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/kJAAAOSwc-tY5NFx/s-l400.webp" alt="Apple iPhone 7" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Apple iPhone 7</h3>
+                <p class="product-condition">32GB Unlocked - Excellent</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(373)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$66.95</span>
+                    <span class="original-price">$649.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                    <span>80 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 39 -->
+        <div class="product-card" data-brand="samsung" data-price="127.01" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/iq0AAOSwtshmn-Yy/s-l400.webp" alt="Samsung Galaxy S21" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S21 5G</h3>
+                <p class="product-condition">SM-G991U1 Unlocked 128GB Phantom Gray</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(293)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$127.01</span>
+                </div>
+                <div class="product-stats">
+                    <span>Good</span>
+                    <span>59 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 40 -->
+        <div class="product-card" data-brand="apple" data-price="137.73" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/cTAAAOSwAElmoPvc/s-l400.webp" alt="Apple iPhone 12" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Apple iPhone 12</h3>
+                <p class="product-condition">A2172 Boost Only 64GB Black</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(2)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$137.73</span>
+                </div>
+                <div class="product-stats">
+                    <span>Good</span>
+                    <span>290 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 41 -->
+        <div class="product-card" data-brand="samsung" data-price="159.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/QHcAAeSwsphojA~m/s-l400.webp" alt="Samsung Galaxy S22" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S22</h3>
+                <p class="product-condition">256GB S901U Unlocked - Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(5)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$159.99</span>
+                    <span class="original-price">$849.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>140 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 42 -->
+        <div class="product-card" data-brand="apple" data-price="116.95" data-condition="excellent">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/RHIAAOSwCtJaGbNC/s-l400.webp" alt="Apple iPhone 8 Plus" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Apple iPhone 8 Plus</h3>
+                <p class="product-condition">64GB Unlocked - Excellent</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(189)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$116.95</span>
+                    <span class="original-price">$799.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Thu, Oct 2</span>
+                    <span>609 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 43 -->
+        <div class="product-card" data-brand="samsung" data-price="240.99" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/aqIAAeSwnTNoL4oz/s-l400.webp" alt="Samsung Galaxy S21 Ultra" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S21 Ultra</h3>
+                <p class="product-condition">5G 128GB G998U Unlocked - Very Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(211)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$240.99</span>
+                    <span class="original-price">$1,199.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>3,301 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 44 -->
+        <div class="product-card" data-brand="samsung" data-price="207.99" data-condition="very-good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/he4AAeSwUGVoMKcx/s-l400.webp" alt="Samsung Galaxy S23 FE" class="product-image">
+                <div class="product-badge">NEW</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S23 FE</h3>
+                <p class="product-condition">128GB S711U Unlocked - Very Good</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(5)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$207.99</span>
+                    <span class="original-price">$629.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Est. delivery: Wed, Oct 1</span>
+                    <span>230 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 45 -->
+        <div class="product-card" data-brand="apple" data-price="139.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/9f0AAOSw2atljH~W/s-l400.webp" alt="Apple iPhone 12" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Apple iPhone 12</h3>
+                <p class="product-condition">64GB Black AT&T Good Condition</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(20)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$139.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>AT&T</span>
+                    <span>Only 2 left</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 46 -->
+        <div class="product-card" data-brand="samsung" data-price="69.95" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/ZNUAAeSwfNxo2gGz/s-l400.webp" alt="Samsung Galaxy Tab A7 Lite" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy Tab A7 Lite</h3>
+                <p class="product-condition">8.7'' 32GB Gray (WiFi+LTE)</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(65 sold)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$69.95</span>
+                    <span class="original-price">$159.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Unlocked</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 47 -->
+        <div class="product-card" data-brand="oneplus" data-price="109.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/9rMAAOSw599mrOAr/s-l400.webp" alt="OnePlus Nord N30" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">OnePlus Nord N30</h3>
+                <p class="product-condition">CPH2515 T-Mobile Unlocked 128GB</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(7)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$109.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Chromatic Gray Good</span>
+                    <span>236 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 48 -->
+        <div class="product-card" data-brand="samsung" data-price="164.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/iKsAAOSwMuBmn-Mf/s-l400.webp" alt="Samsung Galaxy S20 Ultra" class="product-image">
+                <div class="product-badge">HOT</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Samsung Galaxy S20 Ultra</h3>
+                <p class="product-condition">5G SM-G988U Unlocked 128GB Cosmic Black</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(195)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$164.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Good</span>
+                    <span>Only 1 left!</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 49 -->
+        <div class="product-card" data-brand="sonim" data-price="74.99" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/hksAAOSwprtlG1QM/s-l400.webp" alt="Sonim XP8" class="product-image">
+                <div class="product-badge">RUGGED</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Sonim XP8</h3>
+                <p class="product-condition">XP8800 64GB Verizon GSM Unlocked</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="rating-count">(19)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$74.99</span>
+                </div>
+                <div class="product-stats">
+                    <span>Rugged Smartphone Dual SIM</span>
+                    <span>335 sold</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+
+        <!-- Product 50 -->
+        <div class="product-card" data-brand="apple" data-price="35.00" data-condition="good">
+            <div class="product-image-container">
+                <img src="https://i.ebayimg.com/thumbs/images/g/e9QAAeSwgWRok4Z4/s-l400.webp" alt="Apple iPhone 6S" class="product-image">
+                <div class="product-badge">BUDGET</div>
+            </div>
+            <div class="product-info">
+                <h3 class="product-title">Apple iPhone 6S</h3>
+                <p class="product-condition">Tracfone - Space Gray - 32GB</p>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-count">(6)</span>
+                </div>
+                <div class="product-price">
+                    <span class="current-price">$35.00</span>
+                </div>
+                <div class="product-stats">
+                    <span>Good</span>
+                </div>
+                <a href="https://www.ebay.com/e/_electronics/ebay-refurbished-cell-phones-under-250?mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339061490&toolid=20014&customid=&mkevt=1" target="_blank" class="product-btn">
+                    <i class="fas fa-shopping-cart"></i> View on eBay
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load More Button -->
+    <div class="load-more-container">
+        <button class="load-more-btn">LOAD MORE PHONES</button>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Brands</h3>
+            <ul>
+                <li><a href="#">Samsung</a></li>
+                <li><a href="#">Apple</a></li>
+                <li><a href="#">Google</a></li>
+                <li><a href="#">OnePlus</a></li>
+                <li><a href="#">Motorola</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Support</h3>
+            <ul>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Warranty</a></li>
+                <li><a href="#">Returns</a></li>
+                <li><a href="#">Shipping</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Company</h3>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Press</a></li>
+                <li><a href="#">Affiliates</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Newsletter</h3>
+            <p>Subscribe to get special offers and updates</p>
+            <div class="search-box" style="margin-top: 1rem;">
+                <input type="text" class="search-input" placeholder="Your email address">
+                <button class="search-btn">SUBSCRIBE</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2023 BRUTAL.PHONES. All rights reserved. This site is not affiliated with eBay.</p>
+    </div>
+</footer>
+
+<!-- Notification -->
+<div class="notification" id="notification">Product link copied to clipboard!</div>
+
+<script>
+    // Slideshow functionality
+    const slideshowWrapper = document.getElementById('slideshow-wrapper');
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    let currentSlide = 0;
+    const slideCount = slides.length;
+
+    function showSlide(index) {
+        if (index < 0) {
+            currentSlide = slideCount - 1;
+        } else if (index >= slideCount) {
+            currentSlide = 0;
+        } else {
+            currentSlide = index;
+        }
+
+        slideshowWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+        // Update dots
+        dots.forEach((dot, i) => {
+            if (i === currentSlide) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            showSlide(i);
+        });
+    });
+
+    // Auto-advance slideshow
+    setInterval(nextSlide, 5000);
+
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const productCards = document.querySelectorAll('.product-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filter = btn.getAttribute('data-filter');
+
+            // Show/hide products based on filter
+            productCards.forEach(card => {
+                if (filter === 'all') {
+                    card.style.display = 'block';
+                } else if (filter === 'budget') {
+                    const price = parseFloat(card.getAttribute('data-price'));
+                    card.style.display = price < 100 ? 'block' : 'none';
+                } else if (filter === '5g') {
+                    const title = card.querySelector('.product-title').textContent.toLowerCase();
+                    card.style.display = title.includes('5g') ? 'block' : 'none';
+                } else if (filter === 'unlocked') {
+                    const condition = card.querySelector('.product-condition').textContent.toLowerCase();
+                    card.style.display = condition.includes('unlocked') ? 'block' : 'none';
+                } else {
+                    const brand = card.getAttribute('data-brand');
+                    card.style.display = brand === filter ? 'block' : 'none';
+                }
+            });
+        });
+    });
+
+    // Search functionality
+    const searchInput = document.querySelector('.search-input');
+    const searchBtn = document.querySelector('.search-btn');
+
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        productCards.forEach(card => {
+            const title = card.querySelector('.product-title').textContent.toLowerCase();
+            const condition = card.querySelector('.product-condition').textContent.toLowerCase();
+
+            if (title.includes(searchTerm) || condition.includes(searchTerm)) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('keyup', (event) => {
+        if (event.key === 'Enter') {
+            performSearch();
+        }
+    });
+
+    // Load more button
+    const loadMoreBtn = document.querySelector('.load-more-btn');
+    loadMoreBtn.addEventListener('click', () => {
+        showNotification('All products are already displayed!');
+    });
+
+    // Notification system
+    const notification = document.getElementById('notification');
+
+    function showNotification(message) {
+        notification.textContent = message;
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    // Copy to clipboard functionality
+    const productBtns = document.querySelectorAll('.product-btn');
+    productBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = btn.getAttribute('href');
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(url).then(() => {
+                showNotification('Product link copied to clipboard!');
+
+                // Open in new tab after a short delay
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                }, 500);
+            }).catch(() => {
+                // Fallback for older browsers
+                window.open(url, '_blank');
+            });
+        });
+    });
+</script>
+</body>
+</html>
